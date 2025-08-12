@@ -79,7 +79,7 @@ return {
                                     -- NOTE: the value should be STRING!!
                                     defaultConfig = {
                                         indent_style = "space",
-                                        indent_size = "2",
+                                        indent_size = "4",
                                     }
                                 },
                             }
