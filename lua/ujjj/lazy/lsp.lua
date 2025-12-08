@@ -85,6 +85,12 @@ return {
                                     enabled = true,
                                 }
                             }
+                        },
+                        init_options = {
+                            ignoreFileWarnings = {
+                                "*",
+                            },
+                            ignoreSingleFileWarning = true,
                         }
                     }
                 end,
