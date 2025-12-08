@@ -52,7 +52,8 @@ autocmd('BufEnter', {
         if vim.bo.filetype == "zig" then
             vim.cmd.colorscheme("tokyonight-night")
         else
-            vim.cmd.colorscheme("rose-pine-moon")
+            -- vim.cmd.colorscheme("rose-pine-moon")
+            vim.cmd.colorscheme("vague")
         end
     end
 })
