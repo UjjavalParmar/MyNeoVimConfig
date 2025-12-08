@@ -2,17 +2,6 @@ require("ujjj.set")
 require("ujjj.remap")
 require("ujjj.lazy_init")
 
--- DO.not
--- DO NOT INCLUDE THIS
-
--- If i want to keep doing lsp debugging
--- function restart_htmx_lsp()
---     require("lsp-debug-tools").restart({ expected = {}, name = "htmx-lsp", cmd = { "htmx-lsp", "--level", "DEBUG" }, root_dir = vim.loop.cwd(), });
--- end
-
--- DO NOT INCLUDE THIS
--- DO.not
-
 local augroup = vim.api.nvim_create_augroup
 local ujjjGroup = augroup('ujjj', {})
 
@@ -46,17 +35,7 @@ autocmd({"BufWritePre"}, {
     command = [[%s/\s\+$//e]],
 })
 
-autocmd('BufEnter', {
-    group = ujjjGroup,
-    callback = function()
-        if vim.bo.filetype == "zig" then
-            vim.cmd.colorscheme("tokyonight-night")
-        else
-            -- vim.cmd.colorscheme("rose-pine-moon")
-            vim.cmd.colorscheme("vague")
-        end
-    end
-})
+
 
 
 autocmd('LspAttach', {
