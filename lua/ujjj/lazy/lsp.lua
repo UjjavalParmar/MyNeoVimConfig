@@ -79,19 +79,13 @@ return {
                     local lspconfig = require("lspconfig")
                     lspconfig.terraformls.setup {
                         capabilities = capabilities,
-                        settings = {
-                            terraform = {
-                                format = {
-                                    enabled = true,
-                                }
-                            }
-                        },
+                        -- terraform-ls requires static settings to be passed via
+                        -- initializationOptions (init_options in lspconfig).
+                        -- See: https://github.com/hashicorp/terraform-ls/blob/main/docs/SETTINGS.md
                         init_options = {
-                            ignoreFileWarnings = {
-                                "*",
-                            },
+                            -- suppress the single-file warning when editing a lone .tf file
                             ignoreSingleFileWarning = true,
-                        }
+                        },
                     }
                 end,
             }
