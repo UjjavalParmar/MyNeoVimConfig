@@ -1,14 +1,3 @@
-local root_files = {
-  '.luarc.json',
-  '.luarc.jsonc',
-  '.luacheckrc',
-  '.stylua.toml',
-  'stylua.toml',
-  'selene.toml',
-  'selene.yml',
-  '.git',
-}
-
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -28,6 +17,8 @@ return {
     config = function()
         require("conform").setup({
             formatters_by_ft = {
+                go = { "gofmt", "goimports" },
+                python = { "black", "isort" },
                 terraform = { "terraform_fmt" },
                 tf = { "terraform_fmt" },
             }
@@ -44,8 +35,8 @@ return {
         require("mason").setup()
         require("mason-lspconfig").setup({
             ensure_installed = {
-                "lua_ls",
                 "gopls",
+                "pyright",
                 "terraformls"
             },
             handlers = {
@@ -55,21 +46,34 @@ return {
                     }
                 end,
 
-                ["lua_ls"] = function()
+                ["gopls"] = function()
                     local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup {
+                    lspconfig.gopls.setup {
                         capabilities = capabilities,
                         settings = {
-                            Lua = {
-                                format = {
-                                    enable = true,
-                                    -- Put format options here
-                                    -- NOTE: the value should be STRING!!
-                                    defaultConfig = {
-                                        indent_style = "space",
-                                        indent_size = "4",
-                                    }
+                            gopls = {
+                                analyses = {
+                                    unusedparams = true,
                                 },
+                                staticcheck = true,
+                                gofumpt = true,
+                            },
+                        },
+                    }
+                end,
+
+                ["pyright"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.pyright.setup {
+                        capabilities = capabilities,
+                        settings = {
+                            python = {
+                                analysis = {
+                                    autoSearchPaths = true,
+                                    diagnosticMode = "workspace",
+                                    useLibraryCodeForTypes = true,
+                                    typeCheckingMode = "basic"
+                                }
                             }
                         }
                     }
@@ -79,11 +83,7 @@ return {
                     local lspconfig = require("lspconfig")
                     lspconfig.terraformls.setup {
                         capabilities = capabilities,
-                        -- terraform-ls requires static settings to be passed via
-                        -- initializationOptions (init_options in lspconfig).
-                        -- See: https://github.com/hashicorp/terraform-ls/blob/main/docs/SETTINGS.md
                         init_options = {
-                            -- suppress the single-file warning when editing a lone .tf file
                             ignoreSingleFileWarning = true,
                         },
                     }
