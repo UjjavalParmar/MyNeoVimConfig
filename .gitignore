@@ -1,2 +1,30 @@
+# Plugin directories (vim-pack)
+pack/*/start/
+pack/*/opt/
+
+# Plugin lock files
+lazy-lock.json
+packer-lock.json
 plugin/packer_compiled.lua
 
+# Neovim runtime
+*.log
+.netrwhist
+.luarc.json
+
+# LSP and Mason
+mason/
+.mason/
+
+# Undo history
+undodir/
+.undo/
+
+# Temporary files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Claude Code
+.claude/
