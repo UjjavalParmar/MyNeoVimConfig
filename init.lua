@@ -174,7 +174,7 @@ local capabilities = vim.tbl_deep_extend(
 require("fidget").setup({})
 require("mason").setup()
 require("mason-lspconfig").setup({
-  ensure_installed = { "gopls", "pyright", "terraformls","gofumpt" },
+  ensure_installed = { "gopls", "pyright", "terraformls" },
   handlers = {
     function(server_name)
       require("lspconfig")[server_name].setup({
