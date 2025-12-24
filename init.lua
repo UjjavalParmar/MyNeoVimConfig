@@ -78,7 +78,7 @@ vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "<leader>f", function()
-    require("conform").format({ bufnr = 0 })
+  require("conform").format({ bufnr = 0 })
 end)
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
@@ -90,7 +90,7 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 vim.keymap.set("n", "<leader><leader>", function()
-    vim.cmd("so")
+  vim.cmd("so")
 end)
 
 -- ============================================================================
@@ -99,32 +99,32 @@ end)
 
 -- Highlight when copying text
 vim.api.nvim_create_autocmd('TextYankPost', {
-    callback = function()
-        vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 40 })
-    end,
+  callback = function()
+    vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 40 })
+  end,
 })
 
 -- Remove trailing whitespace on save
 vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*",
-    command = [[%s/\s\+$//e]],
+  pattern = "*",
+  command = [[%s/\s\+$//e]],
 })
 
 -- LSP keybindings
 vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(e)
-        local opts = { buffer = e.buf }
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-        vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
-        vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
-        vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
-        vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
-        vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
-        vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
-    end
+  callback = function(e)
+    local opts = { buffer = e.buf }
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
+    vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
+    vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
+  end
 })
 
 -- File explorer settings
@@ -151,12 +151,12 @@ vim.cmd("colorscheme vague")
 -- ============================================================================
 
 require("conform").setup({
-    formatters_by_ft = {
-        go = { "gofmt", "goimports" },
-        python = { "black", "isort" },
-        terraform = { "terraform_fmt" },
-        tf = { "terraform_fmt" },
-    }
+  formatters_by_ft = {
+    go = { "gofmt", "goimports" },
+    python = { "black", "isort" },
+    terraform = { "terraform_fmt" },
+    tf = { "terraform_fmt" },
+  }
 })
 
 -- ============================================================================
@@ -166,22 +166,22 @@ require("conform").setup({
 local cmp = require('cmp')
 local cmp_lsp = require("cmp_nvim_lsp")
 local capabilities = vim.tbl_deep_extend(
-    "force",
-    {},
-    vim.lsp.protocol.make_client_capabilities(),
-    cmp_lsp.default_capabilities())
+  "force",
+  {},
+  vim.lsp.protocol.make_client_capabilities(),
+  cmp_lsp.default_capabilities())
 
 require("fidget").setup({})
 require("mason").setup()
 require("mason-lspconfig").setup({
-    ensure_installed = { "gopls", "pyright", "terraformls" },
-    handlers = {
-        function(server_name)
-            require("lspconfig")[server_name].setup({
-                capabilities = capabilities
-            })
-        end,
-    }
+  ensure_installed = { "gopls", "pyright", "terraformls","gofumpt" },
+  handlers = {
+    function(server_name)
+      require("lspconfig")[server_name].setup({
+        capabilities = capabilities
+      })
+    end,
+  }
 })
 
 -- ============================================================================
@@ -191,35 +191,35 @@ require("mason-lspconfig").setup({
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 cmp.setup({
-    snippet = {
-        expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-        end,
-    },
-    mapping = cmp.mapping.preset.insert({
-        ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-        ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        ["<C-Space>"] = cmp.mapping.complete(),
-    }),
-    sources = cmp.config.sources({
-        { name = "copilot", group_index = 2 },
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-    }, {
-        { name = 'buffer' },
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ["<C-Space>"] = cmp.mapping.complete(),
+  }),
+  sources = cmp.config.sources({
+    { name = "copilot", group_index = 2 },
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  }, {
+      { name = 'buffer' },
     })
 })
 
 vim.diagnostic.config({
-    float = {
-        focusable = false,
-        style = "minimal",
-        border = "rounded",
-        source = "always",
-        header = "",
-        prefix = "",
-    },
+  float = {
+    focusable = false,
+    style = "minimal",
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+  },
 })
 
 -- ============================================================================
@@ -232,15 +232,15 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>pws', function()
-    local word = vim.fn.expand("<cword>")
-    builtin.grep_string({ search = word })
+  local word = vim.fn.expand("<cword>")
+  builtin.grep_string({ search = word })
 end)
 vim.keymap.set('n', '<leader>pWs', function()
-    local word = vim.fn.expand("<cWORD>")
-    builtin.grep_string({ search = word })
+  local word = vim.fn.expand("<cWORD>")
+  builtin.grep_string({ search = word })
 end)
 vim.keymap.set('n', '<leader>ps', function()
-    builtin.grep_string({ search = vim.fn.input("Grep > ") })
+  builtin.grep_string({ search = vim.fn.input("Grep > ") })
 end)
 vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
 
@@ -250,36 +250,36 @@ vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
 
 -- Setup treesitter (new API)
 require('nvim-treesitter').setup({
-    install_dir = vim.fn.stdpath('data') .. '/site'
+  install_dir = vim.fn.stdpath('data') .. '/site'
 })
 
 -- Auto-install missing parsers when opening a file
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = '*',
-    callback = function()
-        local lang = vim.bo.filetype
+  pattern = '*',
+  callback = function()
+    local lang = vim.bo.filetype
 
-        -- Skip filetypes that don't need parsers
-        local ignore_fts = {
-            'netrw', 'help', 'qf', 'man', 'lspinfo', 'checkhealth',
-            'TelescopePrompt', 'TelescopeResults', 'mason', 'lazy',
-            'oil', 'fugitive', 'gitcommit', 'gitrebase'
-        }
+    -- Skip filetypes that don't need parsers
+    local ignore_fts = {
+      'netrw', 'help', 'qf', 'man', 'lspinfo', 'checkhealth',
+      'TelescopePrompt', 'TelescopeResults', 'mason', 'lazy',
+      'oil', 'fugitive', 'gitcommit', 'gitrebase'
+    }
 
-        if lang ~= '' and not vim.tbl_contains(ignore_fts, lang) then
-            -- Try to start treesitter
-            local ok = pcall(vim.treesitter.start)
-            if not ok then
-                -- If it fails, try to install the parser
-                vim.schedule(function()
-                    local install_ok = pcall(require('nvim-treesitter').install, { lang })
-                    if install_ok then
-                        vim.notify('Installing treesitter parser for ' .. lang, vim.log.levels.INFO)
-                    end
-                end)
-            end
-        end
-    end,
+    if lang ~= '' and not vim.tbl_contains(ignore_fts, lang) then
+      -- Try to start treesitter
+      local ok = pcall(vim.treesitter.start)
+      if not ok then
+        -- If it fails, try to install the parser
+        vim.schedule(function()
+          local install_ok = pcall(require('nvim-treesitter').install, { lang })
+          if install_ok then
+            vim.notify('Installing treesitter parser for ' .. lang, vim.log.levels.INFO)
+          end
+        end)
+      end
+    end
+  end,
 })
 
 -- Enable folding
@@ -289,10 +289,10 @@ vim.wo.foldenable = false  -- Don't fold by default
 
 -- Enable indentation (experimental)
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'go', 'python', 'terraform', 'hcl', 'lua' },
-    callback = function()
-        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-    end,
+  pattern = { 'go', 'python', 'terraform', 'hcl', 'lua' },
+  callback = function()
+    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end,
 })
 
 -- ============================================================================
@@ -308,9 +308,9 @@ vim.keymap.set({"i"}, "<C-s>e", function() ls.expand() end, {silent = true})
 vim.keymap.set({"i", "s"}, "<C-s>;", function() ls.jump(1) end, {silent = true})
 vim.keymap.set({"i", "s"}, "<C-s>,", function() ls.jump(-1) end, {silent = true})
 vim.keymap.set({"i", "s"}, "<C-E>", function()
-    if ls.choice_active() then
-        ls.change_choice(1)
-    end
+  if ls.choice_active() then
+    ls.change_choice(1)
+  end
 end, {silent = true})
 
 -- Undo tree
@@ -319,41 +319,41 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 -- Trouble (Error list)
 require("trouble").setup({ icons = false })
 vim.keymap.set("n", "<leader>tt", function()
-    require("trouble").toggle()
+  require("trouble").toggle()
 end)
 vim.keymap.set("n", "[t", function()
-    require("trouble").next({skip_groups = true, jump = true});
+  require("trouble").next({skip_groups = true, jump = true});
 end)
 vim.keymap.set("n", "]t", function()
-    require("trouble").previous({skip_groups = true, jump = true});
+  require("trouble").previous({skip_groups = true, jump = true});
 end)
 
 -- Zen mode
 vim.keymap.set("n", "<leader>zz", function()
-    require("zen-mode").setup({
-        window = {
-            width = 90,
-            options = {}
-        },
-    })
-    require("zen-mode").toggle()
-    vim.wo.wrap = false
-    vim.wo.number = true
-    vim.wo.rnu = true
-    ColorMyPencils()
+  require("zen-mode").setup({
+    window = {
+      width = 90,
+      options = {}
+    },
+  })
+  require("zen-mode").toggle()
+  vim.wo.wrap = false
+  vim.wo.number = true
+  vim.wo.rnu = true
+  ColorMyPencils()
 end)
 
 vim.keymap.set("n", "<leader>zZ", function()
-    require("zen-mode").setup({
-        window = {
-            width = 80,
-            options = {}
-        },
-    })
-    require("zen-mode").toggle()
-    vim.wo.wrap = false
-    vim.wo.number = false
-    vim.wo.rnu = false
-    vim.opt.colorcolumn = "0"
-    ColorMyPencils()
+  require("zen-mode").setup({
+    window = {
+      width = 80,
+      options = {}
+    },
+  })
+  require("zen-mode").toggle()
+  vim.wo.wrap = false
+  vim.wo.number = false
+  vim.wo.rnu = false
+  vim.opt.colorcolumn = "0"
+  ColorMyPencils()
 end)
