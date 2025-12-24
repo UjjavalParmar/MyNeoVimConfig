@@ -1,6 +1,5 @@
 require("ujjj.set")
 require("ujjj.remap")
-require("ujjj.lazy_init")
 
 local augroup = vim.api.nvim_create_augroup
 local ujjjGroup = augroup('ujjj', {})
